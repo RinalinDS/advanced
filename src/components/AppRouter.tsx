@@ -5,6 +5,7 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 
 export const AppRouter = () => {
     const {isAuth} = useTypedSelector(state => state.auth)
+    console.log(isAuth)
     return (
         isAuth
             ?
