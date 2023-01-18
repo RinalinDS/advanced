@@ -1,7 +1,7 @@
 import {AuthActionsEnum, SetAuthAction, SetErrorAction, SetLoadingAction, SetUserAction} from "./types";
 import {IUser} from "../../../models/IUser";
 import {AppDispatch} from "../../index";
-import axios from "axios";
+import {UserService} from "../../../api/UserService";
 
 export const AuthActionCreators = {
     setUser: (user: IUser): SetUserAction => ({type: AuthActionsEnum.SET_USER, payload: user}),
@@ -13,7 +13,7 @@ export const AuthActionCreators = {
         try {
             dispatch(setIsLoading(true))
             setTimeout(async () => {
-                const response = await axios.get<IUser[]>('./users.json')
+                const response = await UserService.getUsers()
                 const mockUser = response.data.find(f => f.username === username && f.password === password)
                 if (mockUser) {
                     localStorage.setItem('auth', 'true')
@@ -23,12 +23,13 @@ export const AuthActionCreators = {
                 } else {
                     dispatch(setError('Wrong login or password'))
                 }
+                dispatch(setIsLoading(false))
             }, 1000)
         } catch (e) {
             dispatch(setError('Error happened while login'))
-        } finally {
             dispatch(setIsLoading(false))
         }
+
     },
     logout: () => (dispatch: AppDispatch) => {
         const {setUser, setIsAuth} = AuthActionCreators
