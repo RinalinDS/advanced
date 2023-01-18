@@ -7,7 +7,7 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 import {IEvent} from "../models/IEvent";
 
 export const Event: FC = () => {
-    const {guests} = useTypedSelector(state => state.event)
+    const {guests, events} = useTypedSelector(state => state.event)
     const {user} = useTypedSelector(state => state.auth)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const {fetchGuests, createEvent, fetchEvents} = useActions()
@@ -27,7 +27,7 @@ export const Event: FC = () => {
 
     return (
         <Layout>
-            <EventCalendar events={[]}/>
+            <EventCalendar events={events}/>
             <Row justify={'center'} align={'middle'} style={{background: 'white'}}>
                 <Button onClick={onButtonClickHandler}>
                     Add Event
